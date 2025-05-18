@@ -1,13 +1,13 @@
 import "../pages/index.css";
 import { initialCards } from "../scripts/cards.js";
 
-// Темплейт карточки
+// @todo: Темплейт карточки
 const cardTemplate = document.querySelector("#card-template").content;
 
-// DOM узлы
+// @todo: DOM узлы
 const placeList = document.querySelector(".places__list");
 
-// Функция создания карточки
+// @todo: Функция создания карточки
 
 function createCard(title, imageUrl, deleteCard) {
   const cardCopy = cardTemplate.cloneNode(true);
@@ -25,14 +25,14 @@ function createCard(title, imageUrl, deleteCard) {
   return cardCopy;
 }
 
-// Функция удаления карточки
+// @todo: Функция удаления карточки
 
 function removeCard(cardCopy) {
   cardCopy.remove();
   cardCopy.innerHTML = "";
 }
 
-// Вывести карточки на страницу
+// @todo: Вывести карточки на страницу
 
 function renderTemplate() {
   initialCards.forEach((element) => {
@@ -45,28 +45,49 @@ function renderTemplate() {
 }
 renderTemplate();
 
-// открываем и закрываем popup с *редактировать профиль*
-
 const editButton = document.querySelector(".profile__edit-button");
-const closeEditPopupWindow = document.querySelector(".popup__close");
-const popup = document.querySelector(".popup");
+const closeButton = document.querySelectorAll(".popup__close");
+const popupEdit = document.querySelector(".popup_type_edit");
+const addButton = document.querySelector(".profile__add-button");
+const popupNewCard = document.querySelector(".popup_type_new-card");
+const popupTypeImage = document.querySelector(".popup_type_image");
+const popupRemove = document.querySelectorAll(".popup");
+const image = document.querySelectorAll(".card__image");
+const popupImage = document.querySelector('.popup__image');
 
-editButton.addEventListener("click", function () {
-  popup.classList.add("popup_is-opened");
-});
+editButton.addEventListener("click", () => {openPopup(popupEdit)});
+addButton.addEventListener("click", () => {openPopup(popupNewCard)});
 
-closeEditPopupWindow.addEventListener("click", function () {
-  popup.classList.remove("popup_is-opened");
-});
+image.forEach(image => {
+  image.addEventListener('click', function() {
+    const imageSrc = image.src;
+    popupImage.src = imageSrc;
+    openPopup(popupTypeImage)
+  })
+})
 
-// Добавление текста в input
+closeButton.forEach(button => {
+  button.addEventListener('click', function() {
+    popupRemove.forEach(popup => {
+      closePopup(popup);
+    })
+  })
+})
 
-const editFormProfile = document.forms["edit-profile"];
-const editFormProfileName = editFormProfile.elements.name;
-const editFormProfileDescription = editFormProfile.elements.description;
-const profileName = document.querySelector(".profile__title");
+
+function openPopup(popupWindow) {
+  popupWindow.classList.add("popup_is-opened");
+}
+
+function closePopup(popupWindow) {
+  popupWindow.classList.remove("popup_is-opened");
+}
+
+const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
-editFormProfileName.value = profileName.textContent;
-editFormProfileDescription.value = profileDescription.textContent;
+const formEditProfile = document.forms["edit-profile"];
+const inputName = formEditProfile.elements.name;
+const inputDescription = formEditProfile.elements.description;
 
-
+inputName.value = profileTitle.textContent;
+inputDescription.value = profileDescription.textContent;
