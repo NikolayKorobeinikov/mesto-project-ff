@@ -129,3 +129,5 @@ function isLiked() {
   });
 }
 isLiked();
+
+console.log("OK");
