@@ -1,7 +1,9 @@
 import { initialCards } from "../scripts/cards.js";
+import { closePopup } from "../components/modals.js";
 
 const cardTemplate = document.querySelector("#card-template").content;
 const placeList = document.querySelector(".places__list");
+const popupNewCard = document.querySelector(".popup_type_new-card");
 
 export function createCard(title, imageUrl, deleteCard, handleLike) {
   const cardCopy = cardTemplate.cloneNode(true);
@@ -17,7 +19,7 @@ export function createCard(title, imageUrl, deleteCard, handleLike) {
 
   deleteButton.addEventListener("click", () => deleteCard(card));
   likeButton.addEventListener("click", () => handleLike(likeButton));
-  
+
   return cardCopy;
 }
 
@@ -39,19 +41,20 @@ export function renderTemplate() {
   });
 }
 
-// const cardForm = document.forms['new-place'];
-const inputCardName = document.querySelector('.popup__input_type_card-name');
-const inputCardUrl = document.querySelector('.popup__input_type_url');
+const inputCardName = document.querySelector(".popup__input_type_card-name");
+const inputCardUrl = document.querySelector(".popup__input_type_url");
 
 export function addCardByInputData(evt) {
   evt.preventDefault();
   const newCardName = inputCardName.value;
   const newCardUrl = inputCardUrl.value;
-  const newCardEdit = createCard(newCardName, newCardUrl, removeCard, handleLike);
-  placeList.appendChild(newCardEdit);
+  const newCardEdit = createCard(
+    newCardName,
+    newCardUrl,
+    removeCard,
+    handleLike
+  );
+  placeList.prepend(newCardEdit);
+  evt.target.reset();
   closePopup(popupNewCard);
 }
-
-
-
-
