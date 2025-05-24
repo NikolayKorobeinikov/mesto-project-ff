@@ -1,5 +1,5 @@
 import { initialCards } from "../scripts/cards.js";
-import { openPopup, closePopup } from "../components/modals.js";
+import { openPopup, closePopup } from "./modals.js";
 
 const cardTemplate = document.querySelector("#card-template").content;
 const placeList = document.querySelector(".places__list");

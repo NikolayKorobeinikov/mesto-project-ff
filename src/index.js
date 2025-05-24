@@ -1,10 +1,10 @@
-import "../pages/index.css";
-import { renderTemplate, addCardByInputData } from "../components/card.js";
+import "./pages/index.css";
+import { renderTemplate, addCardByInputData } from "./components/card.js";
 import {
   openPopup,
   closePopup,
   closePopupByOverlay,
-} from "../components/modals.js";
+} from "./components/modals.js";
 
 const editButton = document.querySelector(".profile__edit-button");
 const closeButton = document.querySelectorAll(".popup__close");
