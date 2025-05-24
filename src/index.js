@@ -1,25 +1,27 @@
 import "../pages/index.css";
-import {renderTemplate, addCardByInputData} from "../components/card.js";
-import {openPopup, closePopup, closePopupEsc, closePopupByOverlay } from "../components/modals.js";
+import { renderTemplate, addCardByInputData } from "../components/card.js";
+import {
+  openPopup,
+  closePopup,
+  closePopupByOverlay,
+} from "../components/modals.js";
 
 const editButton = document.querySelector(".profile__edit-button");
 const closeButton = document.querySelectorAll(".popup__close");
 const popupEdit = document.querySelector(".popup_type_edit");
 const addButton = document.querySelector(".profile__add-button");
 const popupNewCard = document.querySelector(".popup_type_new-card");
-const popupTypeImage = document.querySelector(".popup_type_image");
 const popups = document.querySelectorAll(".popup");
 const image = document.querySelectorAll(".card__image");
-const popupImage = document.querySelector(".popup__image");
-const popupTitle = document.querySelector('.popup__caption');
+const popupImageElement = document.querySelector(".popup__image");
+const popupCaption = document.querySelector(".popup__caption");
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
-const formElement = document.querySelector('.popup__form');
-const nameInput = document.querySelector('.popup__input_type_name');
-const jobInput = document.querySelector('.popup__input_type_description');
+const formElement = document.querySelector(".popup__form");
+const nameInput = document.querySelector(".popup__input_type_name");
+const jobInput = document.querySelector(".popup__input_type_description");
 
 // События открытия и закрытия модальных окон
-
 editButton.addEventListener("click", () => {
   openPopup(popupEdit);
 });
@@ -30,12 +32,12 @@ addButton.addEventListener("click", () => {
 
 image.forEach((image) => {
   image.addEventListener("click", function () {
-    console.log('ok');
+    console.log("ok");
     const imageSrc = image.src;
     const imageAlt = image.alt;
-    imageAlt.src = imageSrc;
-    popupTitle.textContent = imageAlt;
-    // openPopup(popupImage);
+    popupImageElement.src = imageSrc;
+    popupImageElement.alt = imageAlt;
+    popupCaption.textContent = imageAlt;
     openPopup(popupTypeImage);
   });
 });
@@ -47,7 +49,6 @@ closeButton.forEach((button) => {
     });
   });
 });
-
 
 popups.forEach((popup) => {
   popup.addEventListener("click", closePopupByOverlay);
@@ -73,10 +74,8 @@ function handleFormSubmit(evt) {
 
 formElement.addEventListener("submit", handleFormSubmit);
 
-
 // Работа с формой добавления картинки
-
-const cardForm = document.forms['new-place'];
-cardForm.addEventListener('submit', addCardByInputData);
+const cardForm = document.forms["new-place"];
+cardForm.addEventListener("submit", addCardByInputData);
 
 renderTemplate();

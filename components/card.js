@@ -1,9 +1,10 @@
 import { initialCards } from "../scripts/cards.js";
-import { closePopup } from "../components/modals.js";
+import { openPopup, closePopup } from "../components/modals.js";
 
 const cardTemplate = document.querySelector("#card-template").content;
 const placeList = document.querySelector(".places__list");
 const popupNewCard = document.querySelector(".popup_type_new-card");
+const popupTypeImage = document.querySelector(".popup_type_image");
 
 export function createCard(title, imageUrl, deleteCard, handleLike) {
   const cardCopy = cardTemplate.cloneNode(true);
@@ -19,6 +20,16 @@ export function createCard(title, imageUrl, deleteCard, handleLike) {
 
   deleteButton.addEventListener("click", () => deleteCard(card));
   likeButton.addEventListener("click", () => handleLike(likeButton));
+
+  cardImage.addEventListener("click", () => {
+    const popupImageElement = document.querySelector(".popup__image");
+    const popupCaption = document.querySelector(".popup__caption");
+    popupImageElement.src = imageUrl;
+    popupImageElement.alt = title;
+    popupCaption.textContent = title;
+
+    openPopup(popupTypeImage);
+  });
 
   return cardCopy;
 }
