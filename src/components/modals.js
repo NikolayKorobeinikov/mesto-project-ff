@@ -5,12 +5,15 @@ export function openPopup(popupWindow) {
 
 export function closePopup(popupWindow) {
   popupWindow.classList.remove("popup_is-opened");
+  document.removeEventListener("keydown", closePopupEsc);
 }
 
 export function closePopupEsc(evt) {
   if (evt.key === "Escape") {
     const popup = document.querySelector(".popup_is-opened");
-    closePopup(popup);
+    if(popup) {
+      closePopup(popup);
+    }
   }
 }
 

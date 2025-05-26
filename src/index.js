@@ -1,5 +1,6 @@
 import "./pages/index.css";
-import { renderTemplate, addCardByInputData } from "./components/card.js";
+import { initialCards } from "./scripts/cards.js";
+import { createCard, removeCard, handleLike } from "./components/card.js";
 import {
   openPopup,
   closePopup,
@@ -12,17 +13,36 @@ const popupEdit = document.querySelector(".popup_type_edit");
 const addButton = document.querySelector(".profile__add-button");
 const popupNewCard = document.querySelector(".popup_type_new-card");
 const popups = document.querySelectorAll(".popup");
-const image = document.querySelectorAll(".card__image");
-const popupImageElement = document.querySelector(".popup__image");
-const popupCaption = document.querySelector(".popup__caption");
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
 const formElement = document.querySelector(".popup__form");
 const nameInput = document.querySelector(".popup__input_type_name");
 const jobInput = document.querySelector(".popup__input_type_description");
+const placeList = document.querySelector(".places__list");
+const popupTypeImage = document.querySelector(".popup_type_image");
 
-// События открытия и закрытия модальных окон
+function renderTemplate() {
+  initialCards.forEach((element) => {
+    const nameCard = element.name;
+    const linkCard = element.link;
+    const card = createCard(nameCard, linkCard, removeCard, handleLike, showImagePopup);
+    placeList.appendChild(card);
+  });
+}
+renderTemplate();
+
+ function showImagePopup(title, imageUrl) {
+  const popupImageElement = document.querySelector(".popup__image");
+    const popupCaption = document.querySelector(".popup__caption");
+    popupImageElement.src = imageUrl;
+    popupImageElement.alt = title;
+    popupCaption.textContent = title;
+    openPopup(popupTypeImage);
+}
+
 editButton.addEventListener("click", () => {
+  nameInput.value = profileTitle.textContent;
+  jobInput.value = profileDescription.textContent;
   openPopup(popupEdit);
 });
 
@@ -30,40 +50,21 @@ addButton.addEventListener("click", () => {
   openPopup(popupNewCard);
 });
 
-image.forEach((image) => {
-  image.addEventListener("click", function () {
-    console.log("ok");
-    const imageSrc = image.src;
-    const imageAlt = image.alt;
-    popupImageElement.src = imageSrc;
-    popupImageElement.alt = imageAlt;
-    popupCaption.textContent = imageAlt;
-    openPopup(popupTypeImage);
-  });
-});
-
 closeButton.forEach((button) => {
-  button.addEventListener("click", function () {
-    popups.forEach((popup) => {
+  button.addEventListener("click", () => {
+    const popup = button.closest('.popup');
+    if (popup) {
       closePopup(popup);
-    });
+    }
   });
 });
 
 popups.forEach((popup) => {
   popup.addEventListener("click", closePopupByOverlay);
-});
-
-// Плавное открытие и закрытие попапов
-popups.forEach((popup) => {
   popup.classList.add("popup_is-animated");
 });
 
-// Работа с формой профиля
-nameInput.value = profileTitle.textContent;
-jobInput.value = profileDescription.textContent;
-
-function handleFormSubmit(evt) {
+function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   const newName = nameInput.value;
   const newJob = jobInput.value;
@@ -72,10 +73,28 @@ function handleFormSubmit(evt) {
   closePopup(popupEdit);
 }
 
-formElement.addEventListener("submit", handleFormSubmit);
+formElement.addEventListener("submit", handleProfileFormSubmit);
 
-// Работа с формой добавления картинки
 const cardForm = document.forms["new-place"];
 cardForm.addEventListener("submit", addCardByInputData);
 
-renderTemplate();
+const inputCardName = document.querySelector(".popup__input_type_card-name");
+const inputCardUrl = document.querySelector(".popup__input_type_url");
+
+function addCardByInputData(evt) {
+  evt.preventDefault();
+  const newCardName = inputCardName.value;
+  const newCardUrl = inputCardUrl.value;
+  const newCardEdit = createCard(
+    newCardName,
+    newCardUrl,
+    removeCard,
+    handleLike
+  );
+  placeList.prepend(newCardEdit);
+  evt.target.reset();
+  closePopup(popupNewCard);
+}
+
+
+
