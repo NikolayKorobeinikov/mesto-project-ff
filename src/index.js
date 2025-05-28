@@ -15,7 +15,7 @@ const popupNewCard = document.querySelector(".popup_type_new-card");
 const popups = document.querySelectorAll(".popup");
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
-const formElement = document.querySelector(".popup__form");
+const profileFormElement = document.querySelector(".popup__form");
 const nameInput = document.querySelector(".popup__input_type_name");
 const jobInput = document.querySelector(".popup__input_type_description");
 const placeList = document.querySelector(".places__list");
@@ -25,19 +25,25 @@ function renderTemplate() {
   initialCards.forEach((element) => {
     const nameCard = element.name;
     const linkCard = element.link;
-    const card = createCard(nameCard, linkCard, removeCard, handleLike, showImagePopup);
+    const card = createCard(
+      nameCard,
+      linkCard,
+      removeCard,
+      handleLike,
+      showImagePopup
+    );
     placeList.appendChild(card);
   });
 }
 renderTemplate();
 
- function showImagePopup(title, imageUrl) {
+function showImagePopup(title, imageUrl) {
   const popupImageElement = document.querySelector(".popup__image");
-    const popupCaption = document.querySelector(".popup__caption");
-    popupImageElement.src = imageUrl;
-    popupImageElement.alt = title;
-    popupCaption.textContent = title;
-    openPopup(popupTypeImage);
+  const popupCaption = document.querySelector(".popup__caption");
+  popupImageElement.src = imageUrl;
+  popupImageElement.alt = title;
+  popupCaption.textContent = title;
+  openPopup(popupTypeImage);
 }
 
 editButton.addEventListener("click", () => {
@@ -52,7 +58,7 @@ addButton.addEventListener("click", () => {
 
 closeButton.forEach((button) => {
   button.addEventListener("click", () => {
-    const popup = button.closest('.popup');
+    const popup = button.closest(".popup");
     if (popup) {
       closePopup(popup);
     }
@@ -73,7 +79,7 @@ function handleProfileFormSubmit(evt) {
   closePopup(popupEdit);
 }
 
-formElement.addEventListener("submit", handleProfileFormSubmit);
+profileFormElement.addEventListener("submit", handleProfileFormSubmit);
 
 const cardForm = document.forms["new-place"];
 cardForm.addEventListener("submit", addCardByInputData);
@@ -95,6 +101,3 @@ function addCardByInputData(evt) {
   evt.target.reset();
   closePopup(popupNewCard);
 }
-
-
-
