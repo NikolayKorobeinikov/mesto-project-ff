@@ -8,11 +8,11 @@ import {
 } from "./components/modals.js";
 
 const editButton = document.querySelector(".profile__edit-button");
-const closeButton = document.querySelectorAll(".popup__close");
+const closeButtonList = document.querySelectorAll(".popup__close");
 const popupEdit = document.querySelector(".popup_type_edit");
 const addButton = document.querySelector(".profile__add-button");
 const popupNewCard = document.querySelector(".popup_type_new-card");
-const popups = document.querySelectorAll(".popup");
+const popupsList = document.querySelectorAll(".popup");
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
 const profileFormElement = document.querySelector(".popup__form");
@@ -35,7 +35,6 @@ function renderTemplate() {
     placeList.appendChild(card);
   });
 }
-renderTemplate();
 
 function showImagePopup(title, imageUrl) {
   const popupImageElement = document.querySelector(".popup__image");
@@ -45,6 +44,8 @@ function showImagePopup(title, imageUrl) {
   popupCaption.textContent = title;
   openPopup(popupTypeImage);
 }
+
+renderTemplate();
 
 editButton.addEventListener("click", () => {
   nameInput.value = profileTitle.textContent;
@@ -56,7 +57,7 @@ addButton.addEventListener("click", () => {
   openPopup(popupNewCard);
 });
 
-closeButton.forEach((button) => {
+closeButtonList.forEach((button) => {
   button.addEventListener("click", () => {
     const popup = button.closest(".popup");
     if (popup) {
@@ -65,7 +66,7 @@ closeButton.forEach((button) => {
   });
 });
 
-popups.forEach((popup) => {
+popupsList.forEach((popup) => {
   popup.addEventListener("click", closePopupByOverlay);
   popup.classList.add("popup_is-animated");
 });
@@ -95,7 +96,8 @@ function addCardByInputData(evt) {
     newCardName,
     newCardUrl,
     removeCard,
-    handleLike
+    handleLike,
+    showImagePopup
   );
   placeList.prepend(newCardEdit);
   evt.target.reset();
