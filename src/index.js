@@ -6,6 +6,7 @@ import {
   closePopup,
   closePopupByOverlay,
 } from "./components/modals.js";
+import { enableValidation, clearValidation } from "./components/validation.js";
 
 const editButton = document.querySelector(".profile__edit-button");
 const closeButtonList = document.querySelectorAll(".popup__close");
@@ -50,10 +51,13 @@ renderTemplate();
 editButton.addEventListener("click", () => {
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileDescription.textContent;
+  clearValidation(profileFormElement, validationConfig);
   openPopup(popupEdit);
 });
 
 addButton.addEventListener("click", () => {
+  cardForm.reset();
+  clearValidation(cardForm, validationConfig);
   openPopup(popupNewCard);
 });
 
@@ -103,3 +107,14 @@ function addCardByInputData(evt) {
   evt.target.reset();
   closePopup(popupNewCard);
 }
+
+const validationConfig = {
+  formSelector: ".popup__form",
+  inputSelector: ".popup__input",
+  submitButtonSelector: ".popup__button",
+  inactiveButtonClass: "popup__button_disabled",
+  inputErrorClass: "popup__input_type_error",
+  errorClass: "popup__error_visible",
+};
+
+enableValidation(validationConfig);
