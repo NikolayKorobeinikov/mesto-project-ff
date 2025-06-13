@@ -7,6 +7,12 @@ import {
   closePopupByOverlay,
 } from "./components/modals.js";
 import { enableValidation, clearValidation } from "./components/validation.js";
+import {
+  getUserInfo,
+  getInitialCards,
+  updateUserInfo,
+  addNewCard,
+} from './components/api.js';
 
 const editButton = document.querySelector(".profile__edit-button");
 const closeButtonList = document.querySelectorAll(".popup__close");
@@ -21,6 +27,36 @@ const nameInput = document.querySelector(".popup__input_type_name");
 const jobInput = document.querySelector(".popup__input_type_description");
 const placeList = document.querySelector(".places__list");
 const popupTypeImage = document.querySelector(".popup_type_image");
+
+function renderCards(cards) {
+  cards.forEach((cardData) => {
+    const card = createCard(
+      cardData.name,
+      cardData.link,
+      removeCard,
+      handleLike,
+      showImagePopup,
+      cardData._id,
+      cardData.likes,
+      cardData.owner._id,
+      userId
+    );
+    placeList.append(card);
+  });
+}
+
+let userId;
+
+Promise.all([getUserInfo(), getInitialCards()])
+  .then(([userData, cards]) => {
+    userId = userData._id;
+    profileTitle.textContent = userData.name;
+    profileDescription.textContent = userData.about;
+    renderCards(cards.reverse());
+  })
+  .catch((err) => {
+    console.error("Ошибка при инициализации страницы:", err);
+  });
 
 function renderTemplate() {
   initialCards.forEach((element) => {
@@ -79,9 +115,19 @@ function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   const newName = nameInput.value;
   const newJob = jobInput.value;
-  profileTitle.textContent = newName;
-  profileDescription.textContent = newJob;
-  closePopup(popupEdit);
+
+  updateUserInfo(newName, newJob)
+    .then((data) => {
+      profileTitle.textContent = data.name;
+      profileDescription.textContent = data.about;
+      closePopup(popupEdit);
+    })
+    .catch((err) => {
+      console.error("Ошибка обновления профиля:", err);
+    });
+  // profileTitle.textContent = newName;
+  // profileDescription.textContent = newJob;
+  // closePopup(popupEdit);
 }
 
 profileFormElement.addEventListener("submit", handleProfileFormSubmit);
@@ -96,16 +142,36 @@ function addCardByInputData(evt) {
   evt.preventDefault();
   const newCardName = inputCardName.value;
   const newCardUrl = inputCardUrl.value;
-  const newCardEdit = createCard(
-    newCardName,
-    newCardUrl,
-    removeCard,
-    handleLike,
-    showImagePopup
-  );
-  placeList.prepend(newCardEdit);
-  evt.target.reset();
-  closePopup(popupNewCard);
+  addNewCard(newCardName, newCardUrl)
+    .then((cardData) => {
+      const newCard = createCard(
+        cardData.name,
+        cardData.link,
+        removeCard,
+        handleLike,
+        showImagePopup,
+        cardData._id,
+        cardData.likes,
+        cardData.owner._id,
+        userId
+      );
+      placeList.prepend(newCard);
+      evt.target.reset();
+      closePopup(popupNewCard);
+    })
+    .catch((err) => {
+      console.error("Ошибка добавления карточки:", err);
+    });
+  // const newCardEdit = createCard(
+  //   newCardName,
+  //   newCardUrl,
+  //   removeCard,
+  //   handleLike,
+  //   showImagePopup
+  // );
+  // placeList.prepend(newCardEdit);
+  // evt.target.reset();
+  // closePopup(popupNewCard);
 }
 
 const validationConfig = {
@@ -116,5 +182,15 @@ const validationConfig = {
   inputErrorClass: "popup__input_type_error",
   errorClass: "popup__error_visible",
 };
+
+// Promise.all([getUserInfo(), getInitialCards()])
+//   .then(([userData, cards]) => {
+//     profileTitle.textContent = userData.name;
+//     profileDescription.textContent = userData.about;
+//     renderCards(cards.reverse());
+//   })
+//   .catch((err) => {
+//     console.error("Ошибка при инициализации страницы:", err);
+//   });
 
 enableValidation(validationConfig);

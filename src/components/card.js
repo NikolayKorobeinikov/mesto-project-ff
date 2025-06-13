@@ -1,3 +1,4 @@
+import {deleteCard as apiDeleteCard} from './api.js';
 const cardTemplate = document.querySelector("#card-template").content;
 
 export function createCard(
@@ -5,7 +6,11 @@ export function createCard(
   imageUrl,
   deleteCard,
   handleLike,
-  showImagePopup
+  showImagePopup,
+  cardId,
+  likes,
+  ownerId,
+  currentUserId
 ) {
   const cardCopy = cardTemplate.cloneNode(true);
   const card = cardCopy.querySelector(".card");
@@ -17,6 +22,22 @@ export function createCard(
   cardTitle.textContent = title;
   cardImage.src = imageUrl;
   cardImage.alt = title;
+
+  if (ownerId === currentUserId) {
+    deleteButton.addEventListener("click", () => {
+      if (confirm("Вы уверены, что хотите удалить карточку?")) {
+        apiDeleteCard(cardId)
+          .then(() => {
+            deleteCardHandler(card);
+          })
+          .catch((err) => {
+            console.error("Ошибка удаления карточки:", err);
+          });
+      }
+    });
+  } else {
+    deleteButton.remove(); 
+  }
 
   deleteButton.addEventListener("click", () => deleteCard(card));
   likeButton.addEventListener("click", () => handleLike(likeButton));
