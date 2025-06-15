@@ -39,7 +39,6 @@ function renderCards(cards) {
       cardData._id,
       cardData.likes,
       cardData.owner._id,
-      userId
     );
     placeList.append(card);
   });
@@ -52,7 +51,7 @@ Promise.all([getUserInfo(), getInitialCards()])
     userId = userData._id;
     profileTitle.textContent = userData.name;
     profileDescription.textContent = userData.about;
-    renderCards(cards.reverse());
+    renderCards(cards);
   })
   .catch((err) => {
     console.error("Ошибка при инициализации страницы:", err);
@@ -67,7 +66,11 @@ function renderTemplate() {
       linkCard,
       removeCard,
       handleLike,
-      showImagePopup
+      showImagePopup,
+      element._id || '',
+      element.likes || [],
+      element.owner?._id || '',
+      userId
     );
     placeList.appendChild(card);
   });
@@ -81,6 +84,7 @@ function showImagePopup(title, imageUrl) {
   popupCaption.textContent = title;
   openPopup(popupTypeImage);
 }
+
 
 renderTemplate();
 
@@ -125,9 +129,6 @@ function handleProfileFormSubmit(evt) {
     .catch((err) => {
       console.error("Ошибка обновления профиля:", err);
     });
-  // profileTitle.textContent = newName;
-  // profileDescription.textContent = newJob;
-  // closePopup(popupEdit);
 }
 
 profileFormElement.addEventListener("submit", handleProfileFormSubmit);
@@ -151,9 +152,7 @@ function addCardByInputData(evt) {
         handleLike,
         showImagePopup,
         cardData._id,
-        cardData.likes,
-        cardData.owner._id,
-        userId
+        cardData.likes
       );
       placeList.prepend(newCard);
       evt.target.reset();
@@ -162,16 +161,6 @@ function addCardByInputData(evt) {
     .catch((err) => {
       console.error("Ошибка добавления карточки:", err);
     });
-  // const newCardEdit = createCard(
-  //   newCardName,
-  //   newCardUrl,
-  //   removeCard,
-  //   handleLike,
-  //   showImagePopup
-  // );
-  // placeList.prepend(newCardEdit);
-  // evt.target.reset();
-  // closePopup(popupNewCard);
 }
 
 const validationConfig = {
@@ -182,15 +171,5 @@ const validationConfig = {
   inputErrorClass: "popup__input_type_error",
   errorClass: "popup__error_visible",
 };
-
-// Promise.all([getUserInfo(), getInitialCards()])
-//   .then(([userData, cards]) => {
-//     profileTitle.textContent = userData.name;
-//     profileDescription.textContent = userData.about;
-//     renderCards(cards.reverse());
-//   })
-//   .catch((err) => {
-//     console.error("Ошибка при инициализации страницы:", err);
-//   });
 
 enableValidation(validationConfig);
