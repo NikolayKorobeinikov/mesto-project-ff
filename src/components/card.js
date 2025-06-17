@@ -19,7 +19,6 @@ export function createCard(
   const deleteButton = cardCopy.querySelector(".card__delete-button");
   const likeButton = cardCopy.querySelector(".card__like-button");
   
-  // добавил для подсчета лайков
   const likeCounter = cardCopy.querySelector(".card__like-count");
 
   cardTitle.textContent = title;
@@ -45,10 +44,9 @@ export function createCard(
       }
     });
   } else {
-    deleteButton.remove(); 
+    deleteButton.remove();
   }
 
-  deleteButton.addEventListener("click", () => deleteCard(card));
   likeButton.addEventListener("click", () => handleLike(cardId, likeButton, likeCounter));
   cardImage.addEventListener("click", () => showImagePopup(title, imageUrl));
 
