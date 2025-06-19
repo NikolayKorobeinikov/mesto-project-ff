@@ -92,6 +92,11 @@ function showImagePopup(title, imageUrl) {
   openPopup(popupTypeImage);
 }
 
+function renderLoading(isLoading, buttonElement, defaultText = "Сохранить") {
+  if (!buttonElement) return;
+  buttonElement.textContent = isLoading ? "Сохранение..." : defaultText;
+}
+
 editButton.addEventListener("click", () => {
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileDescription.textContent;
@@ -119,6 +124,10 @@ popupsList.forEach((popup) => {
 
 profileFormElement.addEventListener("submit", (evt) => {
   evt.preventDefault();
+
+  const button = profileFormElement.querySelector(validationConfig.submitButtonSelector);
+  renderLoading(true, button);
+
   const newName = nameInput.value;
   const newJob = jobInput.value;
 
@@ -135,6 +144,10 @@ profileFormElement.addEventListener("submit", (evt) => {
 
 cardForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
+
+  const button = cardForm.querySelector(validationConfig.submitButtonSelector);
+  renderLoading(true, button);
+
   const newCardName = inputCardName.value;
   const newCardUrl = inputCardUrl.value;
 
@@ -168,6 +181,10 @@ avatarEditButton.addEventListener("click", () => {
 
 avatarForm.addEventListener("submit", (e) => {
   e.preventDefault();
+  
+  const button = avatarForm.querySelector(validationConfig.submitButtonSelector);
+  renderLoading(true, button);
+
   updateAvatar(avatarInput.value)
     .then((data) => {
       profileImage.style.backgroundImage = `url(${data.avatar})`;
@@ -175,6 +192,7 @@ avatarForm.addEventListener("submit", (e) => {
       closePopup(popupAvatar);
     })
     .catch((err) => console.error("Ошибка обновления аватара:", err));
+
 });
 
 enableValidation(validationConfig);

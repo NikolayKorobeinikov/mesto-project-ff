@@ -72,16 +72,3 @@ export const updateAvatar = (newAvatar) => {
     }),
   }).then(checkResponse);
 };
-
-// export const updateAvatar = (newAvatar) => {
-//   return fetch("https://mesto.nomoreparties.co/v1/wff-cohort-40/users/me/avatar", {
-//     method: "PATCH",
-//     headers: {
-//       authorization: "294f6bc7-441f-47d9-9dfd-16621e49a7e5",
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify({
-//       avatar: newAvatar,
-//     }),
-//   }).then((res) => res.json());
-// };

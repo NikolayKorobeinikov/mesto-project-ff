@@ -36,7 +36,8 @@
 }
 
 .form__input-error,
-.popup__error {
+.popup__error,
+.avatar-link-input-error  {
   visibility: hidden;
   display: block;
   min-height: 14px;
@@ -45,6 +46,7 @@
 }
 
 .popup__input_type_error + .form__input-error,
-.popup__input_type_error + .popup__error {
+.popup__input_type_error + .popup__error,
+.popup__input_type_error + .avatar-link-input-error {
   visibility: visible;
 }

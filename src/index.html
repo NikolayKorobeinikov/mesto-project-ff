@@ -53,9 +53,9 @@
               name="avatar-link"
               class="popup__input popup__input_type_url popup__input_type_error"
               placeholder="Ссылка на изображение"
-              required
-              pattern="/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/"/>
-            <span class="avatar-link-input-error popup__error_visible"></span>
+              pattern="/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/"
+              required/>
+            <span id="avatar-link-input-error" class="avatar-link-input-error popup__error_visible"></span>
             <button type="submit" class="button popup__button">
               Сохранить
             </button>
@@ -157,3 +157,6 @@
     </template>
   </body>
 </html>
+
+
+<!-- class="popup__input popup__input_type_url popup__input_type_error" -->
