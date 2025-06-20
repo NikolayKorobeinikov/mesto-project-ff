@@ -139,6 +139,9 @@ profileFormElement.addEventListener("submit", (evt) => {
     })
     .catch((err) => {
       console.error("Ошибка обновления профиля:", err);
+    })
+    .finally(() => {
+      renderLoading(false, button);
     });
 });
 
@@ -170,6 +173,9 @@ cardForm.addEventListener("submit", (evt) => {
     })
     .catch((err) => {
       console.error("Ошибка добавления карточки:", err);
+    })
+    .finally(() => {
+      renderLoading(false, button);
     });
 });
 
@@ -181,7 +187,7 @@ avatarEditButton.addEventListener("click", () => {
 
 avatarForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  
+
   const button = avatarForm.querySelector(validationConfig.submitButtonSelector);
   renderLoading(true, button);
 
@@ -191,8 +197,12 @@ avatarForm.addEventListener("submit", (e) => {
       avatarForm.reset();
       closePopup(popupAvatar);
     })
-    .catch((err) => console.error("Ошибка обновления аватара:", err));
-
+    .catch((err) => {
+      console.error("Ошибка обновления аватара:", err);
+    })
+    .finally(() => {
+      renderLoading(false, button);
+    });
 });
 
 enableValidation(validationConfig);
